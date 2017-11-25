@@ -11,47 +11,77 @@ body {
   background: $main-from;
   background: -webkit-linear-gradient(to right, $main-from, $main-to);
   background: linear-gradient(to right, $main-from, $main-to);
-  margin-top: 100px;
+  padding: 0;
+  margin: 100px 0 0 0;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
 }
 
 .container {
+  width: 100%;
   max-width: 1200px;
-  margin-left: auto;
+  padding-right: $column-gutter;
+  padding-left: $column-gutter;
   margin-right: auto;
-
-}
-
-.row {
-  display: flex;
+  margin-left: auto;
   @media screen and (max-width: $break-md) {
-    flex-direction: column;
+    max-width: $break-md -((2*$column-gutter)+4px);
   }
-  > .third {
-    width: 100% *(1/3);
-    padding: 0 $column-gutter;
+  .row {
+    display: flex;
+    margin-left: -$column-gutter;
+    margin-right: -$column-gutter;
+
     @media screen and (max-width: $break-md) {
+      flex-direction: column;
+    }
+    > .column {
+      display: flex;
+      flex-direction: column;
+    }
+    > .third {
+      width: 100% *(1/3);
+    }
+    > .two-third {
+      width: 100% *(2/3);
+    }
+    > .full {
+      flex: 0 0 100%;
       width: 100%;
     }
-  }
-  > .two-third {
-    width: 100% *(2/3);
-    padding: 0 $column-gutter;
-    @media screen and (max-width: $break-md) {
-      width: 100%;
+    > .half {
+      width: 50%;
+    }
+
+    > .full, > .half, > .third, > .two-third {
+      position: relative;
+      min-height: 1px;
+      padding-right: $column-gutter;
+      padding-left: $column-gutter;
+
+      @media screen and (max-width: $break-md) {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+    }
+    > .f-column {
+      //display: flex;
+      //flex-direction: column;
     }
   }
 }
 
 #{$a-tags} {
-  font-weight: bold;
+  white-space: nowrap;
+  //font-weight: bold;
   cursor: pointer;
   font-style: italic;
   text-decoration: none;
 
-  background-image: linear-gradient(50deg, $c-body 0%, $c-body 100%);
-  background-repeat: no-repeat;
-  background-size: 150% 0.2em;
-  background-position: 0 105%;
+  background: linear-gradient(50deg, $c-body 0%, $c-body 100%) no-repeat 0 105%;
+  background-size: 150% 0.18em;
   transition: background-size .2s $cubic, color .21s $cubic;
 
   padding-bottom: 7px;
@@ -60,18 +90,30 @@ body {
 }
 
 #{$a-tags-hover} {
+  border-radius: 4px;
+
   color: $main-from;
-  background-size: 100% 95%;
+  background-size: 100% 100%;
 }
 
 .tag {
+  //font-weight: bold;
+  white-space: nowrap;
   background-color: $c-body;
   color: $main-from;
+  margin: 0 5px;
   padding: 0 10px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
+.tags{
+  display: flex;
+  .tag{
+    padding: 2px 10px;
+  }
+}
+
 
 .img-fluid {
   max-width: 100%;
@@ -81,33 +123,114 @@ body {
   border-radius: 25%;
 }
 
+h1 {
+  font-family: $font-family-hero-title;
+  font-size: 3rem;
+  color: $c-body;
+}
+
 .main-hero {
-  @include fadeIn(2s);
-  h1 {
-    font-family: $font-family-hero-title;
-    font-size: 3rem;
-    color: $c-body;
-  }
+  @include fadeIn(3s);
   p {
     color: $c-body;
-    font-size: 2rem;
+    font-size: 1.4rem;
     line-height: 1.5;
-  }
-  img.profile-picture {
+    cursor: default;
+    margin: 40px 0;
+    &:first-line {
+      color: lighten($c-body,10%);
+      line-height: 3.5;
+      letter-spacing: .2ch;
+    }
+    &:hover > span.list-bullet-emoji {
+      transform: rotate(8deg);
 
-    border: 10px solid $c-body;
-    box-shadow: 0 0 10px rgba($c-black, .4);
-    width: 80%;
-    max-width: 250px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    transition: transform .2s $cubic;
-    transition-delay: .05s;
+    }
 
-    &:hover {
-      transform: rotate(5deg);
+    > span.list-bullet-emoji {
+      margin-right: 20px;
+      transition: transform .2s $cubic;
+      display: inline-block;
+
     }
   }
 
+  div.akos-balogh-profile-picture {
+    //Display
+    width: 80%;
+    max-width: 250px;
+    display: block;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+
+    //Style
+    box-shadow: 0 45px 30px 40px rgba($c-black, .15);
+    border: 10px solid $c-body;
+
+    //Effects
+    transition: transform .2s $cubic, box-shadow .3s $cubic;
+    transform: translateX(15%) rotateZ(-11deg) scale(.87);
+    transform-origin: 0 100%;
+    position: relative;
+
+    > img.profile-picture {
+      //Display
+      display: block;
+      width: 100%;
+      min-height: 50px;
+
+      //Style
+      border-radius: 11px;
+
+      //Effects
+      transition: inherit;
+      transform-origin: 0 100%;
+      transform: scale(1.2) translateX(-16%) translateY(-3%) rotateZ(11deg);
+    }
+    &:hover {
+      box-shadow: 0 20px 30px 20px rgba($c-black, .05);
+      transform: translateX(15%) rotateZ(0) scale(.87);
+      > img.profile-picture {
+        transform: scale(1.2) translateX(-10%) translateY(6%) rotateZ(0);
+      }
+    }
+  }
+
+}
+
+.projects {
+  @include fadeIn(5s);
+
+  margin-top: 50px;
+  margin-bottom: 50px;
+  .row {
+    flex-wrap: wrap;
+  }
+  .card {
+    padding: 20px 20px 20px 20px;
+    margin-top: 20px;
+
+    background: lighten($main-from, 5%);
+    border-radius: 2px;
+    box-shadow: 0 10px 20px rgba($c-black, .2);
+    transition: transform .2s $cubic;
+    img.project-picture {
+      width: 100%;
+      height: auto;
+      border: 10px solid lighten($main-from, 2%);
+    }
+    > div.text-content {
+      padding: 5px 10px;
+      > p {
+        &.card-title {
+          font-size: 1.2em;
+        }
+        color: $c-body;
+      }
+    }
+    &:hover {
+      //transform: rotate(1deg);
+    }
+  }
 }
